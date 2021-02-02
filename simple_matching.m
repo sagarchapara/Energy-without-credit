@@ -14,11 +14,51 @@ itrb=1;  % Counter for tracking sellers
 itrs=1;  % Counter for tracking sellers
 total_buyers=n-total_sellers;
 
+%getting prefernce list
+%prefernce list is unprocessed list
 preference_list = zeros(length(buyers))
+
+%latest service provider(lsp) 
+%all initialized to zeros
+lsp = zeros(length(buyers));
+
 for i = 1:length(buyers)
     p = getPreferenceList(buyers(i),sellers,coordinates);
     preference_list(i) = p;
+    node(buyers(i)).unProccessedList = p;
+    node(buyers(i)).lsp =0;
 end
+
+request_list = [];
+for i = 1:length(sellers)
+    node(sellers(i)).requestList = [];
+    request_list = [request_list;[]];
+end
+
+current_buyers = getBuyers(node,buyers);
+while (~isempty(getBuyers(node,buyers)))
+    current_buyers = getBuyers(node,buyers);
+    for i= 1:length(current_buyers)
+        s = node(current_buyers(i)).unProcessedList(1);
+        blocks_requested = node(current_buyers(i)).request;
+        request.blocks = blocks_requested;
+        request.bid_price = node(current_buyers(i)).bidPrice;
+        node(s).requestList = [node(s).requestList;request];
+        node(current_buyers(i)).unProcessedList =  node(current_buyers(i)).unProcessedList(2:end);
+    end
+    for i = 1:length(sellers)
+        
+        
+        
+    
+
+
+
+
+
+
+
+
 
 
 % while (itrb<=total_buyers)    % Counter for tracking buyers
@@ -67,6 +107,8 @@ end
 %     end
 %     
 % end
+
+
 
 
 
