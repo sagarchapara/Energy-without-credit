@@ -46,7 +46,10 @@ while (~isempty(getBuyers(node,buyers)))
         node(s).requestList = [node(s).requestList;request];
         node(current_buyers(i)).unProcessedList =  node(current_buyers(i)).unProcessedList(2:end);
     end
-    for i = 1:length(sellers)
+    current_sellers = getSellers(node,sellers);
+    for i = 1:length(current_sellers)
+        performTrade(node,current_sellers(i));
+        
         
         
         
