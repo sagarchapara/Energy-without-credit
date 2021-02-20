@@ -29,11 +29,6 @@ for i = 1:length(buyers)
     node(buyers(i)).lsp =0;
 end
 
-request_list = [];
-for i = 1:length(sellers)
-    node(sellers(i)).requestList = [];
-    request_list = [request_list;[]];
-end
 
 current_buyers = getBuyers(node,buyers);
 while (~isempty(getBuyers(node,buyers)))
@@ -41,14 +36,16 @@ while (~isempty(getBuyers(node,buyers)))
     for i= 1:length(current_buyers)
         s = node(current_buyers(i)).unProcessedList(1);
         blocks_requested = node(current_buyers(i)).request;
+        request.buyer_id = current_buyers(i);
         request.blocks = blocks_requested;
         request.bid_price = node(current_buyers(i)).bidPrice;
+        request.distance = sqrt((coordinates(s).x - coordinates(current_buyers(i).x))^2 + (coordinates(s).y - coordinates(current_buyers(i).y)^2));
         node(s).requestList = [node(s).requestList;request];
         node(current_buyers(i)).unProcessedList =  node(current_buyers(i)).unProcessedList(2:end);
     end
     current_sellers = getSellers(node,sellers);
     for i = 1:length(current_sellers)
-        performTrade(node,current_sellers(i));
+        node  = performTrade(node,current_sellers(i));
         
         
         

@@ -14,4 +14,5 @@ for itr=1:1:n
     node(itr).request=randi([1 5]); % A node can buy 1 to 5 blocks durin a round;
     node(itr).request_fullfilled=0; % The blocks requirement that remained unfilled at the node. 
     node(itr).bidPrice = randi([1 10]); %The bid price 
+    node(itr).mapping  = [];
 end
