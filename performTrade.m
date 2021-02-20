@@ -76,6 +76,12 @@ for i = 1:length(sorted_list)
             %now check for removal of extra blocks
             blocks_used = min_blocks + blocks_upto_now;
             
+            end_index = index+1;
+            buyersList = node(seller).buyers_list;
+            
+            for i = index+1 : length(buyersList);
+                if 
+            
                 
             
             
