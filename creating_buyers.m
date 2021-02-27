@@ -11,7 +11,13 @@ n=CONST.n;   % Total number of nodes in the network;
 
 for itr=1:1:n
     node(itr).type=0;          % Type =0 buyer,
-    node(itr).request=randi([1 5]); % A node can buy 1 to 5 blocks durin a round;
+    % A node can buy 1 to 5 blocks durin a round;
+    node(itr).request = randi([1 5]); % no of blocks required
+    node(itr).required = node(itr).request;
     node(itr).request_fullfilled=0; % The blocks requirement that remained unfilled at the node. 
     node(itr).bidPrice = randi([1 10]); %The bid price 
+    node(itr).unProcessedList = [];
+    node(itr).mapping  = [];
+    node(itr).lsp = 0;
+    node(itr).rejected_last =0;
 end
