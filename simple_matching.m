@@ -16,36 +16,51 @@ total_buyers=n-total_sellers;
 
 %getting prefernce list
 %prefernce list is unprocessed list
-preference_list = zeros(length(buyers))
 
 %latest service provider(lsp) 
 %all initialized to zeros
-lsp = zeros(length(buyers));
 
 for i = 1:length(buyers)
     p = getPreferenceList(buyers(i),sellers,coordinates);
-    preference_list(i) = p;
-    node(buyers(i)).unProccessedList = p;
+    node(buyers(i)).unProcessedList = p;
     node(buyers(i)).lsp =0;
 end
 
 
-current_buyers = getBuyers(node,buyers);
-while (~isempty(getBuyers(node,buyers)))
+while (~isempty(getBuyers(node,buyers)) )
     current_buyers = getBuyers(node,buyers);
+%     size(current_buyers)
     for i= 1:length(current_buyers)
-        s = node(current_buyers(i)).unProcessedList(1);
-        blocks_requested = node(current_buyers(i)).request;
-        request.buyer_id = current_buyers(i);
+        list = node(current_buyers(i)).unProcessedList;
+        s = list(1);
+        blocks_requested = node(current_buyers(i)).request - node(current_buyers(i)).request_fullfilled;
+        request.buyers_id = current_buyers(i);
         request.blocks = blocks_requested;
         request.bid_price = node(current_buyers(i)).bidPrice;
-        request.distance = sqrt((coordinates(s).x - coordinates(current_buyers(i).x))^2 + (coordinates(s).y - coordinates(current_buyers(i).y)^2));
+        request.distance = sqrt((coordinates(s).x - coordinates(current_buyers(i)).x)^2 + (coordinates(s).y - coordinates(current_buyers(i)).y)^2 );
         node(s).requestList = [node(s).requestList;request];
         node(current_buyers(i)).unProcessedList =  node(current_buyers(i)).unProcessedList(2:end);
     end
     current_sellers = getSellers(node,sellers);
     for i = 1:length(current_sellers)
-        node  = performTrade(node,current_sellers(i));
+        node  = performTrade2(node,current_sellers(i));
+    end
+    
+    for i =1 :length(buyers)
+        if node(buyers(i)).rejected_last ==1 
+            node(buyers(i)).rejected_last =0;
+            if node(buyers(i)).lsp >0
+                node(buyers(i)).unProcessedList = [node(buyers(i)).lsp , node(buyers(i)).unProcessedList];
+            end
+        end
+    end
+    
+    for i = 1:length(sellers)
+        node(sellers(i)).requestList = [];
+    end
+end
+
+        
         
         
         
